@@ -1,4 +1,4 @@
-package client
+package main
 
 import (
 	"fmt"
@@ -29,7 +29,8 @@ func (c *ConntestClient) testConnection() {
 	strEcho := "Halo"
 	servAddr := fmt.Sprintf("%s:%d", c.Host, c.Port)
 
-	conn, err := net.Dial(NETWORK_TYPE, servAddr)
+	nt := getNetworkType()
+	conn, err := net.Dial(nt, servAddr)
 	if err != nil {
 		log.Fatal("Dial failed:", err.Error())
 	}
@@ -53,4 +54,8 @@ func (c *ConntestClient) testConnection() {
 	log.Println("reply from server=", string(reply))
 
 	conn.Close()
+}
+
+func getNetworkType() string {
+	return NETWORK_TYPE
 }

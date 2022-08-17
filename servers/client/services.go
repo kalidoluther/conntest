@@ -1,4 +1,4 @@
-package service
+package main
 
 import (
 	"fmt"
@@ -18,21 +18,21 @@ func Add(s Service) {
 
 func RunAll() {
 	fmt.Println("Initializing services")
-	for _, service := range services {
-		err := service.Init()
+	for _, s := range services {
+		err := s.Init()
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
 	fmt.Println("Starting services")
-	for _, service := range services {
-		go func() {
-			err := service.Start()
+	for _, serv := range services {
+		go func(s Service) {
+			err := s.Start()
 			if err != nil {
 				log.Fatal(err)
 			}
-		}()
+		}(serv)
 	}
 
 	<-make(chan int)
